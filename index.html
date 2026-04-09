@@ -20,7 +20,7 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  height: 100vh;
 }
 
 #controls {
@@ -50,6 +50,15 @@ button {
 
 <script>
 let time = 3600;
+
+// 🔥 VERIFICA SE É MODO LIVE
+const urlParams = new URLSearchParams(window.location.search);
+const isLive = urlParams.get("live");
+
+// se for live → esconder botões
+if (isLive === "1") {
+  document.getElementById("controls").style.display = "none";
+}
 
 function updateDisplay() {
   let h = String(Math.floor(time / 3600)).padStart(2,'0');
