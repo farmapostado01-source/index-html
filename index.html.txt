@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Timer Live</title>
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-size: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial;
+}
+</style>
+</head>
+<body>
+<div id="timer">01:00:00</div>
+
+<script>
+let time = 3600; // 1 hora
+
+function updateDisplay() {
+  let h = String(Math.floor(time / 3600)).padStart(2,'0');
+  let m = String(Math.floor((time % 3600) / 60)).padStart(2,'0');
+  let s = String(time % 60).padStart(2,'0');
+  document.getElementById("timer").innerText = `${h}:${m}:${s}`;
+}
+
+setInterval(() => {
+  if(time > 0) time--;
+  updateDisplay();
+}, 1000);
+
+// SIMULAÇÃO (depois vamos trocar pelo LivePix real)
+window.addEventListener("message", (event) => {
+  if(event.data.type === "pix") {
+    let valor = event.data.value;
+    time += valor * 60;
+  }
+});
+</script>
+</body>
+</html>
