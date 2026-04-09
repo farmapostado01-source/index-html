@@ -3,25 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <title>Timer Live</title>
+
 <style>
-body {
+html, body {
   margin: 0;
-text-shadow: 0 0 20px black;
+  padding: 0;
+  background: transparent !important;
+  overflow: hidden;
+}
+
+#timer {
   color: white;
   font-size: 80px;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  font-family: Arial;
 }
 </style>
+
 </head>
 <body>
+
 <div id="timer">01:00:00</div>
 
 <script>
-let time = 3600;
+let time = 3600; // 1 hora
 
 function updateDisplay() {
   let h = String(Math.floor(time / 3600)).padStart(2,'0');
@@ -35,19 +44,15 @@ setInterval(() => {
   updateDisplay();
 }, 1000);
 
-// DETECTA ALERTA NA TELA (TRUQUE)
+// DETECTA VALORES DO ALERTA (LivePix)
 const observer = new MutationObserver(() => {
-  const bodyText = document.body.innerText;
+  const text = document.body.innerText;
 
-  // procura valor tipo "R$1", "R$5"
-  const match = bodyText.match(/R\$(\d+)/);
+  const match = text.match(/R\$(\d+)/);
 
   if (match) {
     let valor = parseInt(match[1]);
     time += valor * 60;
-
-    // evita somar várias vezes
-    observer.disconnect();
   }
 });
 
@@ -56,5 +61,6 @@ observer.observe(document.body, {
   subtree: true
 });
 </script>
+
 </body>
 </html>
