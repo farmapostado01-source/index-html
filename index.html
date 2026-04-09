@@ -21,7 +21,7 @@ body {
 <div id="timer">01:00:00</div>
 
 <script>
-let time = 3600; // 1 hora
+let time = 3600;
 
 function updateDisplay() {
   let h = String(Math.floor(time / 3600)).padStart(2,'0');
@@ -35,12 +35,25 @@ setInterval(() => {
   updateDisplay();
 }, 1000);
 
-// SIMULAÇÃO (depois vamos trocar pelo LivePix real)
-window.addEventListener("message", (event) => {
-  if(event.data.type === "pix") {
-    let valor = event.data.value;
+// DETECTA ALERTA NA TELA (TRUQUE)
+const observer = new MutationObserver(() => {
+  const bodyText = document.body.innerText;
+
+  // procura valor tipo "R$1", "R$5"
+  const match = bodyText.match(/R\$(\d+)/);
+
+  if (match) {
+    let valor = parseInt(match[1]);
     time += valor * 60;
+
+    // evita somar várias vezes
+    observer.disconnect();
   }
+});
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
 });
 </script>
 </body>
